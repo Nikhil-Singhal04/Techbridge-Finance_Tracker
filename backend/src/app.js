@@ -9,14 +9,19 @@ const sanitizeInput = require('./middleware/sanitize');
 const AppError = require('./utils/AppError');
 const errorHandler = require('./middleware/errorHandler');
 const apiRoutes = require('./routes');
+const { swaggerUi, swaggerSpec } = require('./docs/swagger');
 
 const app = express();
 
 // Disable X-Powered-By header for security
 app.disable('x-powered-by');
 
-// Security HTTP headers
-app.use(helmet());
+// Security HTTP headers (disable CSP for swagger-ui assets compatibility)
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 // CORS configuration
 app.use(
@@ -37,6 +42,13 @@ app.use(sanitizeInput);
 if (config.env !== 'test') {
   app.use(morgan('dev'));
 }
+
+// Swagger API Documentation routes
+app.get('/api/docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Health check endpoint (verifies DB and Redis)
 app.get('/api/health', async (req, res) => {
