@@ -1,6 +1,18 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const getBaseUrl = () => {
+  // If explicitly provided via VITE_API_URL and not pointing to localhost on GitHub Pages
+  if (import.meta.env.VITE_API_URL && !import.meta.env.VITE_API_URL.includes('localhost')) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // If hosted on GitHub Pages, connect to the live Render cloud backend
+  if (typeof window !== 'undefined' && window.location.hostname.includes('github.io')) {
+    return 'https://finance-tracker-backend-2dkm.onrender.com/api';
+  }
+  return import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+};
+
+const API_URL = getBaseUrl();
 
 const client = axios.create({
   baseURL: API_URL,

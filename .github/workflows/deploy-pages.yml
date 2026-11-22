@@ -40,7 +40,7 @@ jobs:
       - name: Build frontend for GitHub Pages
         env:
           GITHUB_PAGES: 'true'
-          VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:5000/api' }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL || 'https://finance-tracker-backend-2dkm.onrender.com/api' }}
         run: |
           cd frontend
           npm run build
