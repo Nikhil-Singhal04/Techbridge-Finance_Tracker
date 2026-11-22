@@ -2,11 +2,13 @@ const express = require('express');
 const transactionsController = require('../controllers/transactions.controller');
 const authenticate = require('../middleware/auth');
 const authorize = require('../middleware/rbac');
+const { transactionLimiter } = require('../middleware/rateLimiters');
 
 const router = express.Router();
 
-// All transaction routes require authentication
+// All transaction routes require authentication and are rate limited (100 req / 1 hr)
 router.use(authenticate);
+router.use(transactionLimiter);
 
 // GET /api/transactions - All roles can view their own transactions
 router.get('/', transactionsController.listTransactions);

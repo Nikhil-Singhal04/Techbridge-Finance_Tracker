@@ -1,6 +1,7 @@
 const { query } = require('../db/pool');
 const AppError = require('../utils/AppError');
 const categoriesService = require('./categories.service');
+const cacheService = require('./cache');
 
 // Whitelist for allowed sorting columns and directions
 const SORT_BY_MAP = {
@@ -229,6 +230,10 @@ const createTransaction = async ({ userId, type, amount, categoryId, description
 
   const newTx = insertRes.rows[0];
   newTx.category_name = category.name;
+
+  // Invalidate user's analytics cache on transaction creation
+  await cacheService.invalidateUserAnalyticsCache(userId);
+
   return newTx;
 };
 
@@ -312,6 +317,10 @@ const updateTransaction = async (id, updateData, currentUser) => {
   const updatedTx = updateRes.rows[0];
   const cat = await categoriesService.getCategoryById(updatedTx.category_id);
   updatedTx.category_name = cat ? cat.name : null;
+
+  // Invalidate user's analytics cache on transaction update
+  await cacheService.invalidateUserAnalyticsCache(existing.user_id);
+
   return updatedTx;
 };
 
@@ -330,6 +339,10 @@ const deleteTransaction = async (id, currentUser) => {
   }
 
   await query('DELETE FROM transactions WHERE id = $1', [id]);
+
+  // Invalidate user's analytics cache on transaction deletion
+  await cacheService.invalidateUserAnalyticsCache(existing.user_id);
+
   return { id: existing.id, userId: existing.user_id };
 };
 
