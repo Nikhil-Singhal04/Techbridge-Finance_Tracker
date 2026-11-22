@@ -1,12 +1,20 @@
 const express = require('express');
 const authRoutes = require('./auth.routes');
+const categoriesRoutes = require('./categories.routes');
+const transactionsRoutes = require('./transactions.routes');
 const authenticate = require('../middleware/auth');
 const authorize = require('../middleware/rbac');
 
 const router = express.Router();
 
-// Mount auth routes
+// Auth routes
 router.use('/auth', authRoutes);
+
+// Categories routes
+router.use('/categories', categoriesRoutes);
+
+// Transactions routes
+router.use('/transactions', transactionsRoutes);
 
 // Test route to verify RBAC protection (admin only)
 router.get('/admin-test', authenticate, authorize('admin'), (req, res) => {
