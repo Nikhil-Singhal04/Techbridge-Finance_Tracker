@@ -5,25 +5,35 @@ const morgan = require('morgan');
 const config = require('./config');
 const { pool } = require('./db/pool');
 const redisClient = require('./db/redis');
+const sanitizeInput = require('./middleware/sanitize');
 const AppError = require('./utils/AppError');
 const errorHandler = require('./middleware/errorHandler');
+const apiRoutes = require('./routes');
 
 const app = express();
+
+// Disable X-Powered-By header for security
+app.disable('x-powered-by');
 
 // Security HTTP headers
 app.use(helmet());
 
 // CORS configuration
-app.use(cors({
-  origin: config.clientUrl,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: config.clientUrl,
+    credentials: true,
+  })
+);
 
 // Body parser with size limit to prevent payload attacks
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-// Request logging
+// Strip HTML/script tags from req.body, req.query, and req.params (XSS sanitization)
+app.use(sanitizeInput);
+
+// Request logging in non-test mode
 if (config.env !== 'test') {
   app.use(morgan('dev'));
 }
@@ -80,7 +90,10 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// 404 Route handler
+// Mount main API routes under /api
+app.use('/api', apiRoutes);
+
+// 404 Route handler for unmapped endpoints
 app.all('*', (req, res, next) => {
   next(new AppError(`Route ${req.originalUrl} not found on this server`, 404, 'NOT_FOUND'));
 });
