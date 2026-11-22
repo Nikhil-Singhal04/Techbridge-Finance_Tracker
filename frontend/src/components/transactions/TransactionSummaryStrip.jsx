@@ -1,13 +1,6 @@
 import React, { useMemo } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Activity } from 'lucide-react';
-
-const formatCurrency = (val) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(val || 0);
-};
+import { TrendingUp, TrendingDown, IndianRupee, Activity } from 'lucide-react';
+import { formatCurrency } from '../../utils/formatters';
 
 export const TransactionSummaryStrip = ({ transactions = [] }) => {
   // Memoize summary calculations for transactions on the current page/view
@@ -62,7 +55,7 @@ export const TransactionSummaryStrip = ({ transactions = [] }) => {
 
       <div className="summary-card">
         <div className="summary-icon balance-icon">
-          <DollarSign size={20} />
+          <IndianRupee size={20} />
         </div>
         <div className="summary-content">
           <div className="summary-label">Net Balance</div>

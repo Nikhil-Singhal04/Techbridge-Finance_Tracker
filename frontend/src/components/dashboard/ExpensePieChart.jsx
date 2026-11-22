@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 import { useTheme } from '../../context/ThemeContext';
 import { PieChart as PieIcon, Info } from 'lucide-react';
+import { formatCurrency } from '../../utils/formatters';
 
 const COLORS = [
   '#3b82f6', // Blue
@@ -25,13 +26,6 @@ const COLORS = [
   '#a855f7', // Purple
 ];
 
-const formatCurrency = (val) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(val || 0);
-};
 
 // Render active enlarged shape on hover or click
 const renderActiveShape = (props) => {

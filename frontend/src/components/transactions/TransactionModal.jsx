@@ -173,7 +173,7 @@ export const TransactionModal = ({
           {/* Amount */}
           <div className="form-group">
             <label htmlFor="modal-amount">
-              Amount ($) <span className="text-danger">*</span>
+              Amount (₹) <span className="text-danger">*</span>
             </label>
             <input
               id="modal-amount"

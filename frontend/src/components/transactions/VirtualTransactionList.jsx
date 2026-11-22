@@ -1,17 +1,7 @@
 import React, { memo } from 'react';
 import { FixedSizeList as List, areEqual } from 'react-window';
 import { Eye, Edit2, Trash2 } from 'lucide-react';
-
-const formatCurrency = (amount, type) => {
-  const num = parseFloat(amount) || 0;
-  const formatted = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(num);
-
-  return type === 'income' ? `+${formatted}` : `-${formatted}`;
-};
+import { formatCurrency } from '../../utils/formatters';
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '—';
@@ -21,7 +11,7 @@ const formatDate = (dateStr) => {
     const month = parseInt(parts[1], 10) - 1;
     const day = parseInt(parts[2], 10);
     const d = new Date(year, month, day);
-    return d.toLocaleDateString('en-US', {
+    return d.toLocaleDateString('en-IN', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',

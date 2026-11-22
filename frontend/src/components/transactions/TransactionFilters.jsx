@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, RotateCcw, Filter, Calendar, DollarSign, ArrowUpDown, Layers } from 'lucide-react';
+import { Search, RotateCcw, Filter, Calendar, IndianRupee, ArrowUpDown, Layers } from 'lucide-react';
 
 export const TransactionFilters = ({
   filters,
@@ -131,9 +131,9 @@ export const TransactionFilters = ({
 
         {/* Min Amount */}
         <div className="filter-item">
-          <label htmlFor="min-amount-input">Min Amount ($)</label>
+          <label htmlFor="min-amount-input">Min Amount (₹)</label>
           <div className="input-with-icon">
-            <DollarSign size={16} className="input-icon" />
+            <IndianRupee size={16} className="input-icon" />
             <input
               id="min-amount-input"
               type="number"
@@ -149,9 +149,9 @@ export const TransactionFilters = ({
 
         {/* Max Amount */}
         <div className="filter-item">
-          <label htmlFor="max-amount-input">Max Amount ($)</label>
+          <label htmlFor="max-amount-input">Max Amount (₹)</label>
           <div className="input-with-icon">
-            <DollarSign size={16} className="input-icon" />
+            <IndianRupee size={16} className="input-icon" />
             <input
               id="max-amount-input"
               type="number"

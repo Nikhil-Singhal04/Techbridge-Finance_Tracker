@@ -1,16 +1,6 @@
 import React from 'react';
 import { AlertTriangle, Loader2 } from 'lucide-react';
-
-const formatCurrency = (amount, type) => {
-  const num = parseFloat(amount) || 0;
-  const formatted = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(num);
-
-  return type === 'income' ? `+${formatted}` : `-${formatted}`;
-};
+import { formatCurrency } from '../../utils/formatters';
 
 export const DeleteConfirmModal = ({
   isOpen,

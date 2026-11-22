@@ -1,13 +1,6 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, Wallet, Percent, ArrowUpRight, ArrowDownRight } from 'lucide-react';
-
-const formatCurrency = (val) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(val || 0);
-};
+import { formatCurrency } from '../../utils/formatters';
 
 export const DashboardSummaryCards = ({ summary = {}, loading = false }) => {
   if (loading) {

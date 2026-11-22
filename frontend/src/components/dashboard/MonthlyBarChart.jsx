@@ -11,15 +11,7 @@ import {
 } from 'recharts';
 import { useTheme } from '../../context/ThemeContext';
 import { BarChart3, Info } from 'lucide-react';
-
-const formatCurrency = (val) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(val || 0);
-};
+import { formatCurrency, formatCompactCurrency } from '../../utils/formatters';
 
 const CustomTooltip = ({ active, payload, label, isDark }) => {
   if (active && payload && payload.length) {
@@ -113,7 +105,7 @@ export const MonthlyBarChart = ({ data = [], year = 2026, loading = false }) => 
               fontSize={12}
               tickLine={false}
               axisLine={{ stroke: gridColor }}
-              tickFormatter={(val) => `$${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
+              tickFormatter={formatCompactCurrency}
             />
             <Tooltip content={<CustomTooltip isDark={isDark} />} />
             <Legend
