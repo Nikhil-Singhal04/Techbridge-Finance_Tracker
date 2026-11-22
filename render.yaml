@@ -25,29 +25,19 @@ services:
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: CLIENT_URL
-        value: https://finance-tracker-frontend.vercel.app
+        value: https://nikhil-singhal04.github.io
       - key: RATE_LIMIT_DISABLED
         value: false
 
-  # Frontend Web Service
-  - type: web
-    name: finance-tracker-frontend
-    env: static
+  # Managed Redis Cache Service
+  - type: redis
+    name: finance-tracker-redis
     plan: free
-    buildCommand: cd frontend && npm ci && npm run build
-    staticPublishPath: ./frontend/dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://finance-tracker-backend.onrender.com/api
+    ipAllowList: []
 
 databases:
-  # Managed PostgreSQL 16
+  # Managed PostgreSQL
   - name: finance-tracker-postgres
     plan: free
     databaseName: finance_tracker
-    user: postgres
-
-  # Managed Redis 7
-  - name: finance-tracker-redis
-    plan: free
-    ipAllowList: []
+    user: finance_user
