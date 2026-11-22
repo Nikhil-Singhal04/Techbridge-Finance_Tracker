@@ -20,7 +20,7 @@ const rateLimitHandler = (message) => {
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.AUTH_RATE_LIMIT_MAX || '5', 10),
+  max: parseInt(process.env.AUTH_RATE_LIMIT_MAX || '60', 10),
   standardHeaders: true,
   legacyHeaders: false,
   skip: () => config.rateLimit.disabled,

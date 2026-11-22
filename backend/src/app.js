@@ -13,6 +13,9 @@ const { swaggerUi, swaggerSpec } = require('./docs/swagger');
 
 const app = express();
 
+// Enable trust proxy for cloud hosting behind reverse proxies (Render, Railway, Fly.io)
+app.set('trust proxy', 1);
+
 // Disable X-Powered-By header for security
 app.disable('x-powered-by');
 
@@ -23,10 +26,29 @@ app.use(
   })
 );
 
-// CORS configuration
+// CORS configuration supporting GitHub Pages, local dev, and configured client URL
+const allowedOrigins = [
+  'https://nikhil-singhal04.github.io',
+  'http://localhost:5173',
+  'http://localhost:5000',
+];
+if (config.clientUrl && !allowedOrigins.includes(config.clientUrl)) {
+  allowedOrigins.push(config.clientUrl);
+}
+
 app.use(
   cors({
-    origin: config.clientUrl,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.github.io') ||
+        origin.includes('localhost')
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
