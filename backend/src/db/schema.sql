@@ -1,10 +1,5 @@
--- Drop tables if they exist to allow clean migrations
-DROP TABLE IF EXISTS transactions CASCADE;
-DROP TABLE IF EXISTS categories CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-
 -- 1. Users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -14,14 +9,14 @@ CREATE TABLE users (
 );
 
 -- 2. Categories table
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('income', 'expense'))
 );
 
 -- 3. Transactions table
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
@@ -34,6 +29,6 @@ CREATE TABLE transactions (
 );
 
 -- 4. Indexes for high-performance querying and analytics
-CREATE INDEX idx_transactions_user_date ON transactions(user_id, transaction_date DESC);
-CREATE INDEX idx_transactions_user_category ON transactions(user_id, category_id);
-CREATE INDEX idx_transactions_user_type ON transactions(user_id, type);
+CREATE INDEX IF NOT EXISTS idx_transactions_user_date ON transactions(user_id, transaction_date DESC);
+CREATE INDEX IF NOT EXISTS idx_transactions_user_category ON transactions(user_id, category_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_user_type ON transactions(user_id, type);

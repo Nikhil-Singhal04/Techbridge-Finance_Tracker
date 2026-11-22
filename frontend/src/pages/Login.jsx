@@ -138,7 +138,7 @@ const Login = () => {
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <Spinner size="small" text="" />
+              <Spinner size="small" text="Signing in..." />
             ) : (
               <>
                 <LogIn size={18} />
@@ -146,6 +146,12 @@ const Login = () => {
               </>
             )}
           </button>
+
+          {isSubmitting && (
+            <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.5rem' }}>
+              Connecting to cloud server (free tier cold start may take 20–40s)...
+            </p>
+          )}
         </form>
 
         <div className="auth-footer">
